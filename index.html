@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cue: Wall Street's research. Plain English.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+ :root {
+ --bg-primary: #0F0F12;
+ --bg-surface: #16161A;
+ --bg-elevated: #1E1E24;
+ --bg-hover: #242430;
+ --bg-border: #2A2A36;
+ --bg-border-subtle: #222230;
+ --accent: #E8A030;
+ --accent-hover: #D4911A;
+ --accent-dim: rgba(232,160,48,0.12);
+ --accent-glow: rgba(232,160,48,0.08);
+ --gain: #22C97A;
+ --gain-bg: rgba(34,201,122,0.10);
+ --gain-border: rgba(34,201,122,0.20);
+ --loss: #F05252;
+ --loss-bg: rgba(240,82,82,0.10);
+ --info: #4A9EFF;
+ --info-bg: rgba(74,158,255,0.10);
+ --neutral: #6B7280;
+ --neutral-bg: rgba(107,114,128,0.12);
+ --text-primary: #F4F4F6;
+ --text-secondary: #9898A8;
+ --text-muted: #55556A;
+ --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px;
+ --shadow-card: 0 1px 3px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+ --shadow-elevated: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+ }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ html { scroll-behavior: smooth; }
+ body {
+ background: var(--bg-primary);
+ color: var(--text-primary);
+ font-family: 'DM Sans', -apple-system, sans-serif;
+ line-height: 1.6;
+ -webkit-font-smoothing: antialiased;
+ overflow-x: hidden;
+ }
+ .serif { font-family: 'DM Serif Display', serif; font-weight: 400; }
+ .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+ a { color: inherit; text-decoration: none; }
+
+ .glow {
+ position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+ width: 900px; height: 600px; border-radius: 50%;
+ background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+ pointer-events: none; z-index: 0;
+ }
+
+ nav {
+ position: sticky; top: 0; z-index: 50;
+ background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
+ border-bottom: 1px solid var(--bg-border-subtle);
+ }
+ nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 128px; }
+ .logo-block { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+ .logo { display: flex; align-items: center; gap: 14px; }
+ .wordmark-text {
+ font-family: 'Century Gothic', 'Futura', 'Avenir Next', sans-serif;
+ font-weight: 800; font-size: 30px; letter-spacing: 0.2px; color: var(--text-primary);
+ }
+ .nav-badge {
+ display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600;
+ letter-spacing: 1px; text-transform: uppercase; color: var(--accent);
+ background: var(--accent-dim); border: 1px solid rgba(232,160,48,0.3);
+ border-radius: 20px; padding: 4px 12px; margin-left: 2px;
+ }
+ .nav-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+ .nav-links { display: flex; align-items: center; gap: 40px; }
+ .nav-links a { font-size: 16px; color: var(--text-secondary); transition: color .15s; }
+ .nav-links a:hover { color: var(--text-primary); }
+ .btn {
+ display: inline-flex; align-items: center; justify-content: center;
+ padding: 11px 22px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600;
+ cursor: pointer; transition: all .15s; border: 1px solid transparent;
+ }
+ .btn-primary { background: var(--accent); color: #14100a; }
+ .btn-primary:hover { background: var(--accent-hover); }
+ .btn-ghost { border-color: var(--bg-border); color: var(--text-primary); }
+ .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+ header.hero { position: relative; padding: 108px 0 90px; overflow: hidden; }
+ .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+ .eyebrow {
+ display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600;
+ letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent);
+ background: var(--accent-dim); padding: 7px 14px; border-radius: 20px; border: 1px solid rgba(232,160,48,0.25);
+ margin-bottom: 22px;
+ }
+ h1.hero-title { font-size: 52px; line-height: 1.12; letter-spacing: -0.5px; margin-bottom: 22px; }
+ h1.hero-title em { color: var(--accent); font-style: normal; }
+ .hero-sub { font-size: 17px; color: var(--text-secondary); max-width: 480px; margin-bottom: 34px; }
+ .hero-ctas { display: flex; gap: 14px; margin-bottom: 30px; }
+ .hero-note { font-size: 12.5px; color: var(--text-muted); }
+
+ .mock-card {
+ background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-xl);
+ padding: 26px; box-shadow: var(--shadow-elevated); position: relative;
+ }
+ .mock-card::before {
+ content: ""; position: absolute; inset: -1px; border-radius: var(--radius-xl); padding: 1px;
+ background: linear-gradient(160deg, rgba(232,160,48,0.35), transparent 40%);
+ -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+ -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+ }
+ .mock-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+ .mock-ticker { font-size: 22px; font-weight: 700; }
+ .mock-name { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+ .mock-badge { font-size: 10.5px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--accent-dim); color: var(--accent); }
+ .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+ .chip { font-size: 11px; font-weight: 500; padding: 5px 11px; border-radius: 20px; }
+ .chip.gain { background: var(--gain-bg); color: var(--gain); }
+ .chip.info { background: var(--info-bg); color: var(--info); }
+ .mock-divider { height: 1px; background: var(--bg-border-subtle); margin: 16px 0; }
+ .mock-reason-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+ .mock-reason { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+ .mini-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+ .mini-stat { background: var(--bg-elevated); border: 1px solid var(--bg-border-subtle); border-radius: var(--radius-md); padding: 12px; text-align: center; }
+ .mini-stat .v { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+ .mini-stat .l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+ section { padding: 96px 0; position: relative; }
+ .kicker { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+ .section-title { font-size: 36px; letter-spacing: -0.4px; margin-bottom: 16px; max-width: 640px; }
+ .section-sub { font-size: 15.5px; color: var(--text-secondary); max-width: 560px; margin-bottom: 56px; }
+
+ .name-story {
+ margin: 56px auto 0; padding-top: 48px; border-top: 1px solid var(--bg-border-subtle);
+ max-width: 640px; text-align: center;
+ }
+ .name-story-mark {
+ width: 74px; height: 74px; margin-bottom: 28px;
+ filter: drop-shadow(0 0 22px rgba(232,160,48,0.45));
+ }
+ .name-story p {
+ font-family: 'DM Serif Display', serif; font-style: italic; font-size: 19px; line-height: 1.65;
+ color: var(--text-secondary);
+ }
+ .name-story p em { color: var(--accent); font-style: normal; }
+
+ .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+ .pillar {
+ background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
+ padding: 28px 22px; transition: border-color .2s;
+ }
+ .pillar:hover { border-color: var(--accent); }
+ .pillar-icon {
+ width: 42px; height: 42px; border-radius: 12px; background: var(--accent-dim);
+ display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--accent);
+ }
+ .pillar h3 { font-size: 16px; margin-bottom: 10px; font-weight: 600; }
+ .pillar p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+ .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: step; }
+ .step { position: relative; padding: 30px 24px 24px; background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg); }
+ .step .num {
+ width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #14100a;
+ display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 18px;
+ }
+ .step h3 { font-size: 16.5px; margin-bottom: 8px; }
+ .step p { font-size: 13.5px; color: var(--text-secondary); }
+
+ .method-divider { border: none; border-top: 1px solid var(--bg-border-subtle); margin: 72px 0 64px; }
+ .method-intro { font-size: 15.5px; color: var(--text-secondary); max-width: 700px; margin-bottom: 44px; line-height: 1.7; }
+ .signal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 48px; }
+ .signal-card {
+ background: var(--bg-elevated); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
+ padding: 24px 20px; transition: border-color .2s;
+ }
+ .signal-card:hover { border-color: var(--accent); }
+ .signal-num {
+ display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
+ border-radius: 7px; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 700;
+ margin-bottom: 16px;
+ }
+ .signal-card h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 9px; line-height: 1.35; }
+ .signal-card p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; }
+ .signal-source {
+ font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--bg-border-subtle);
+ padding-top: 12px; display: flex; gap: 6px; align-items: flex-start;
+ }
+ .signal-source b { color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+
+ .method-split { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 40px; }
+ .method-col {
+ background: var(--bg-elevated); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
+ padding: 28px 26px;
+ }
+ .method-col .tag {
+ display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+ color: var(--accent); background: var(--accent-dim); padding: 5px 11px; border-radius: 20px; margin-bottom: 16px;
+ }
+ .method-col h4 { font-size: 17px; margin-bottom: 10px; }
+ .method-col p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+
+ .cadence-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+ .cadence-badge {
+ flex: 1; min-width: 200px; display: flex; align-items: center; gap: 12px;
+ background: var(--bg-elevated); border: 1px solid var(--bg-border-subtle); border-radius: var(--radius-md);
+ padding: 14px 16px;
+ }
+ .cadence-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gain); flex-shrink: 0; box-shadow: 0 0 0 3px var(--gain-bg); }
+ .cadence-badge .t { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+ .cadence-badge .d { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+ .method-honesty {
+ font-size: 12.5px; color: var(--text-muted); max-width: 780px; line-height: 1.7;
+ border-left: 2px solid var(--bg-border); padding-left: 18px;
+ }
+
+ .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+ .panel { background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg); padding: 26px; }
+ .panel-title { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 18px; }
+ table.impact { width: 100%; border-collapse: collapse; }
+ table.impact th { font-size: 11px; color: var(--text-muted); text-align: right; font-weight: 600; padding-bottom: 10px; border-bottom: 1px solid var(--bg-border); }
+ table.impact th:first-child { text-align: left; }
+ table.impact td { font-size: 13.5px; text-align: right; padding: 12px 0; border-bottom: 1px solid var(--bg-border-subtle); font-variant-numeric: tabular-nums; }
+ table.impact td:first-child { text-align: left; color: var(--text-secondary); }
+ .impact-highlight { text-align: center; margin-top: 22px; }
+ .impact-highlight .big { font-size: 30px; font-weight: 700; color: var(--gain); font-variant-numeric: tabular-nums; }
+ .impact-highlight .small { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+ .donuts { display: flex; justify-content: space-around; align-items: center; }
+ .donut-wrap { text-align: center; }
+ .donut { width: 130px; height: 130px; border-radius: 50%; position: relative; }
+ .donut-hole { position: absolute; inset: 26px; background: var(--bg-surface); border-radius: 50%; }
+ .donut-label { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+ .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: center; margin-top: 18px; }
+ .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--text-muted); }
+ .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+ .billing-toggle { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 40px; }
+ .billing-btn {
+ font-size: 13px; font-weight: 600; padding: 9px 20px; border-radius: 20px; border: 1px solid var(--bg-border);
+ background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; transition: all .15s;
+ display: inline-flex; align-items: center; gap: 7px; font-family: 'DM Sans', sans-serif;
+ }
+ .billing-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+ .billing-btn.active { background: var(--accent); border-color: var(--accent); color: #14100a; }
+ .save-tag { font-size: 10px; font-weight: 700; background: var(--gain-bg); color: var(--gain); padding: 2px 8px; border-radius: 12px; }
+ .billing-btn.active .save-tag { background: rgba(20,16,10,0.18); color: #14100a; }
+ .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+ .price-card {
+ background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
+ padding: 32px 28px; display: flex; flex-direction: column; position: relative;
+ }
+ .price-card.featured { border-color: var(--accent); background: var(--bg-elevated); box-shadow: var(--shadow-elevated); }
+ .price-badge {
+ position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+ background: var(--accent); color: #14100a; font-size: 11px; font-weight: 700; letter-spacing: .5px;
+ text-transform: uppercase; padding: 5px 14px; border-radius: 20px; white-space: nowrap;
+ }
+ .price-tier { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 16px; }
+ .price-card.featured .price-tier { color: var(--accent); }
+ .price-value { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+ .price-value .amount { font-family: 'DM Serif Display', serif; font-size: 40px; }
+ .price-value .period { font-size: 13px; color: var(--text-muted); }
+ .price-annual { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; min-height: 16px; }
+ .price-desc { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 26px; line-height: 1.6; min-height: 66px; }
+ .price-cta { width: 100%; margin-bottom: 28px; }
+ .price-badge.soon { background: var(--bg-elevated); color: var(--text-muted); border: 1px solid var(--bg-border); }
+ .price-card.soon { opacity: 0.92; }
+ .price-cta.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+ .price-features { display: flex; flex-direction: column; gap: 14px; list-style: none; }
+ .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--text-secondary); }
+ .price-features li.excluded { color: var(--text-muted); }
+ .feat-icon { flex-shrink: 0; margin-top: 3px; }
+ .price-note { font-size: 12.5px; color: var(--text-muted); text-align: center; max-width: 620px; margin: 36px auto 0; line-height: 1.7; }
+
+ .quote-section { text-align: center; }
+ .quote-mark { font-size: 15px; color: var(--text-muted); }
+ blockquote {
+ font-family: 'DM Serif Display', serif; font-style: italic; font-size: 28px; line-height: 1.5;
+ max-width: 780px; margin: 18px auto 0; color: var(--text-primary);
+ }
+ blockquote span { color: var(--accent); font-style: normal; }
+
+ .cta-band {
+ background: var(--bg-surface); border-top: 1px solid var(--bg-border-subtle); border-bottom: 1px solid var(--bg-border-subtle);
+ text-align: center; padding: 90px 0;
+ }
+ .cta-band h2 { font-size: 38px; margin-bottom: 18px; }
+ .cta-band p { color: var(--text-secondary); font-size: 15.5px; margin-bottom: 32px; }
+
+ footer { padding: 48px 0 36px; }
+ footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+ .foot-links { display: flex; gap: 26px; }
+ .foot-links a { font-size: 13px; color: var(--text-muted); }
+ .foot-links a:hover { color: var(--text-secondary); }
+ .foot-copy { font-size: 12px; color: var(--text-muted); }
+
+ @media (max-width: 880px) {
+ .hero-grid, .showcase { grid-template-columns: 1fr; }
+ .pillars { grid-template-columns: repeat(2, 1fr); }
+ .steps { grid-template-columns: 1fr; }
+ .signal-grid { grid-template-columns: repeat(2, 1fr); }
+ .method-split { grid-template-columns: 1fr; }
+ .pricing-grid { grid-template-columns: 1fr; }
+ h1.hero-title { font-size: 38px; }
+ .nav-links { display: none; }
+ }
+</style>
+</head>
+<body>
+
+<nav>
+ <div class="wrap">
+ <div class="logo-block">
+ <div class="logo">
+ <svg width="42" height="42" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+ <polygon points="78,50 38,28 38,72" fill="#F2B655"/>
+ <circle cx="20" cy="50" r="9" fill="#F2B655"/>
+ </svg>
+ <span class="wordmark-text">Cue</span>
+ </div>
+ <div class="nav-badge"><span class="dot"></span>AI Portfolio Strategist</div>
+ </div>
+ <div class="nav-links">
+ <a href="#pillars">Why Cue</a>
+ <a href="#how">How it works</a>
+ <a href="#showcase">Your portfolio</a>
+ <a href="#pricing">Pricing</a>
+ </div>
+ <div style="display:flex; gap:10px;">
+ <a href="https://app.cueportfolio.com/app" class="btn btn-ghost">Log in</a>
+ <a class='btn btn-primary' href='/get-started'>Get started</a>
+ </div>
+ </div>
+</nav>
+
+<header class="hero">
+ <div class="glow"></div>
+ <div class="wrap hero-grid">
+ <div>
+ <h1 class="hero-title serif">Wall Street's research.<br><em>Plain</em> English.</h1>
+ <p class="hero-sub">Cue reads your portfolio the way a research desk would: fundamentals, earnings quality, institutional flows, sector positioning, then turns it into a long-term strategy you can actually understand. No jargon. No black box.</p>
+ <div class="hero-ctas">
+ <a class='btn btn-primary' href='/get-started'>Start your strategy →</a>
+ <a href="#how" class="btn btn-ghost">See how it works</a>
+ </div>
+ <div class="hero-note">Free to start · No trading experience required · Your data stays yours</div>
+ </div>
+
+ <div class="mock-card">
+ <div class="mock-head">
+ <div>
+ <div class="mock-ticker">NVDA</div>
+ <div class="mock-name">NVIDIA Corp.</div>
+ </div>
+ <div class="mock-badge">Fills tech gap</div>
+ </div>
+ <div class="chip-row">
+ <span class="chip gain">+18.4% upside</span>
+ <span class="chip gain">Strong earnings</span>
+ <span class="chip info">Institutions buying</span>
+ </div>
+ <div class="mock-divider"></div>
+ <div class="mock-reason-label">Why Cue recommends this</div>
+ <div class="mock-reason">Fills a 12-point gap versus your target Technology allocation. Earnings have beaten estimates for four straight quarters, and institutional ownership rose 6% last quarter, a signal Cue weighs alongside your existing risk profile.</div>
+ <div class="mini-stats">
+ <div class="mini-stat"><div class="v" style="color:var(--gain)">+$41,200</div><div class="l">5-YR PROJECTED GAIN</div></div>
+ <div class="mini-stat"><div class="v">14.2%</div><div class="l">STRATEGY RETURN</div></div>
+ <div class="mini-stat"><div class="v" style="color:var(--accent)">Low</div><div class="l">EFFORT REQUIRED</div></div>
+ </div>
+ </div>
+ </div>
+</header>
+
+<section id="pillars">
+ <div class="wrap">
+ <div class="kicker">Why Cue</div>
+ <h2 class="section-title serif">A research desk's discipline. A friend's clarity.</h2>
+ <p class="section-sub">Cue doesn't ask you to become a financial analyst. It brings the analysis to you, and always shows its work.</p>
+ <div class="pillars">
+ <div class="pillar">
+ <div class="pillar-icon">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-3-3L4 16.5"/></svg>
+ </div>
+ <h3>Institutional intelligence, personal delivery</h3>
+ <p>Fundamentals, earnings data, and institutional flow signals, translated into a plain-English "why" behind every move.</p>
+ </div>
+ <div class="pillar">
+ <div class="pillar-icon">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>
+ </div>
+ <h3>A strategy, not a stock tip</h3>
+ <p>Built around your whole portfolio's long-term plan. Individual picks serve the plan: they don't replace it.</p>
+ </div>
+ <div class="pillar">
+ <div class="pillar-icon">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A5 5 0 1 0 7.5 11.5c.75.76 1.23 1.52 1.41 2.5"/></svg>
+ </div>
+ <h3>Confidence through clarity</h3>
+ <p>Every call shows its reasoning: upside, earnings quality, institutional accumulation, sector gap. Learn as you go, or don't: it's optional.</p>
+ </div>
+ <div class="pillar">
+ <div class="pillar-icon">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+ </div>
+ <h3>Autopilot, with a hand on the wheel</h3>
+ <p>The strategy runs itself. Nothing is a black box: open any recommendation and see exactly what's behind it.</p>
+ </div>
+ </div>
+
+ <div class="name-story">
+ <svg class="name-story-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+ <polygon points="78,50 38,28 38,72" fill="#F2B655"/>
+ <circle cx="20" cy="50" r="9" fill="#F2B655"/>
+ </svg>
+ <p>A cue is the signal that tells you exactly when to act: the beat a director gives an actor, the shot a coach calls before the play. Wall Street generates thousands of signals a day, most of them noise most investors never see clearly. <em>Cue</em> filters through all of it and gives you the one that actually matters for your portfolio, explained in plain English, so you know what to do and why.</p>
+ </div>
+ </div>
+</section>
+
+<section id="how" style="background: var(--bg-surface); border-top: 1px solid var(--bg-border-subtle); border-bottom: 1px solid var(--bg-border-subtle);">
+ <div class="wrap">
+ <div class="kicker">How it works</div>
+ <h2 class="section-title serif">Three steps. No spreadsheets required.</h2>
+ <p class="section-sub">Whether you're funding your first account or you've been holding stocks for years, Cue meets you where you are.</p>
+ <div class="steps">
+ <div class="step">
+ <div class="num">1</div>
+ <h3>Connect your portfolio</h3>
+ <p>Link an existing brokerage account, or tell Cue your starting cash and goals if you're beginning fresh.</p>
+ </div>
+ <div class="step">
+ <div class="num">2</div>
+ <h3>Get your strategy</h3>
+ <p>Cue analyzes your holdings against institutional-grade fundamentals and surfaces a long-term allocation plan, with reasoning for every recommendation.</p>
+ </div>
+ <div class="step">
+ <div class="num">3</div>
+ <h3>Stay on autopilot</h3>
+ <p>Cue monitors earnings, institutional flows, and sector shifts continuously, adjusting the plan and explaining what changed and why.</p>
+ </div>
+ </div>
+
+ <hr class="method-divider">
+
+ <div class="kicker">Methodology</div>
+ <h2 class="section-title serif">What's actually happening behind "Get your strategy"</h2>
+ <p class="method-intro">Cue's engine blends the same quantitative discipline institutional research desks run on with a language model built to explain it in plain terms, so the rigor doesn't stay locked in a black box. Here's what feeds every recommendation, without pulling back the curtain on the exact scoring logic itself.</p>
+
+ <div class="signal-grid">
+ <div class="signal-card">
+ <div class="signal-num">01</div>
+ <h4>Valuation &amp; fundamentals</h4>
+ <p>Every holding is screened against trailing and forward fundamentals: earnings, margins, balance-sheet health, and valuation multiples relative to sector peers, not in isolation.</p>
+ <div class="signal-source"><b>Source:</b> SEC filings (10-K/10-Q), consensus estimates</div>
+ </div>
+ <div class="signal-card">
+ <div class="signal-num">02</div>
+ <h4>Earnings momentum &amp; quality</h4>
+ <p>Flags whether a company is beating, meeting, or missing estimates, and whether the beat is coming from real revenue growth or one-time items that won't repeat.</p>
+ <div class="signal-source"><b>Source:</b> Earnings call transcripts, guidance revisions</div>
+ </div>
+ <div class="signal-card">
+ <div class="signal-num">03</div>
+ <h4>Institutional flow</h4>
+ <p>Reads quarterly ownership filings to see whether large institutions are accumulating or distributing a position: visibility retail investors rarely get on their own.</p>
+ <div class="signal-source"><b>Source:</b> 13F institutional ownership filings</div>
+ </div>
+ <div class="signal-card">
+ <div class="signal-num">04</div>
+ <h4>Portfolio fit &amp; diversification</h4>
+ <p>Every idea is scored on what it does to <em style="color:var(--text-primary); font-style:normal;">your</em> specific portfolio: closing sector gaps, managing concentration, matching your stated risk tolerance.</p>
+ <div class="signal-source"><b>Source:</b> Your live holdings, sector &amp; factor models</div>
+ </div>
+ </div>
+
+ <div class="method-split">
+ <div class="method-col">
+ <span class="tag">Quant discipline</span>
+ <h4>A systematic scoring engine, not a hunch</h4>
+ <p>Cue's screening draws on decades-old, peer-reviewed factor-investing research: the value, quality, and momentum factors that underpin most institutional asset management, applied consistently to every holding, every time. No headlines, no emotion, no chasing what's trending.</p>
+ </div>
+ <div class="method-col">
+ <span class="tag">Language, not just numbers</span>
+ <h4>A reasoning layer that explains itself</h4>
+ <p>A language-reasoning layer sits on top of the scoring engine and turns the underlying signals into a specific, plain-English narrative for your situation, never a generic template. If Cue can't explain a recommendation in a sentence you'd trust from a smart friend, it doesn't surface it.</p>
+ </div>
+ </div>
+
+ <div class="cadence-row">
+ <div class="cadence-badge"><span class="cadence-dot"></span><div><div class="t">Daily fundamentals refresh</div><div class="d">Prices, estimates, and screens re-run every trading day</div></div></div>
+ <div class="cadence-badge"><span class="cadence-dot"></span><div><div class="t">Real-time earnings ingestion</div><div class="d">New transcripts and guidance are read as they're released</div></div></div>
+ <div class="cadence-badge"><span class="cadence-dot"></span><div><div class="t">Quarterly institutional-flow updates</div><div class="d">Aligned to the 13F filing cadence institutions themselves follow</div></div></div>
+ </div>
+
+ <p class="method-honesty">Cue doesn't predict the market or promise returns: no one honestly can. What it offers is a consistent, documented framework applied identically to every recommendation, with the reasoning shown so you can judge it for yourself instead of taking it on faith.</p>
+ </div>
+</section>
+
+<section id="showcase">
+ <div class="wrap">
+ <div class="kicker">The transformation</div>
+ <h2 class="section-title serif">See the strategy, not just the sales pitch</h2>
+ <p class="section-sub">Every Cue plan shows exactly how your allocation shifts, and what that's worth in real dollars over time.</p>
+ <div class="showcase">
+ <div class="panel">
+ <div class="panel-title">Sector allocation: before / after</div>
+ <div class="donuts">
+ <div class="donut-wrap">
+ <div class="donut" style="background: conic-gradient(#9CA3AF 0deg 130deg, #4A9EFF 130deg 210deg, #F5A623 210deg 318deg, #7B61FF 318deg 360deg);">
+ <div class="donut-hole"></div>
+ </div>
+ <div class="donut-label">Before</div>
+ </div>
+ <div class="donut-wrap">
+ <div class="donut" style="background: conic-gradient(#9CA3AF 0deg 112deg, #4A9EFF 112deg 191deg, #F5A623 191deg 263deg, #7B61FF 263deg 360deg);">
+ <div class="donut-hole"></div>
+ </div>
+ <div class="donut-label">After</div>
+ </div>
+ </div>
+ <div class="legend">
+ <div class="legend-item"><span class="legend-dot" style="background:#7B61FF"></span>Technology</div>
+ <div class="legend-item"><span class="legend-dot" style="background:#4A9EFF"></span>Financials</div>
+ <div class="legend-item"><span class="legend-dot" style="background:#F5A623"></span>Energy</div>
+ <div class="legend-item"><span class="legend-dot" style="background:#9CA3AF"></span>Other</div>
+ </div>
+ </div>
+ <div class="panel">
+ <div class="panel-title">Dollar impact</div>
+ <table class="impact">
+ <thead><tr><th></th><th>Today</th><th>Optimized</th><th>Difference</th></tr></thead>
+ <tbody>
+ <tr><td>1yr</td><td>$108,000</td><td>$114,000</td><td style="color:var(--accent); font-weight:600;">+$6,000</td></tr>
+ <tr><td>3yr</td><td>$125,971</td><td>$148,154</td><td style="color:var(--accent); font-weight:600;">+$22,183</td></tr>
+ <tr><td>5yr</td><td>$146,933</td><td>$192,541</td><td style="color:var(--accent); font-weight:600;">+$45,608</td></tr>
+ </tbody>
+ </table>
+ <div class="impact-highlight">
+ <div class="small">Over 5 years, optimization could put an extra</div>
+ <div class="big">+$45,608</div>
+ <div class="small">in your pocket.</div>
+ </div>
+ </div>
+ </div>
+ </div>
+</section>
+
+<section id="pricing" style="background: var(--bg-surface); border-top: 1px solid var(--bg-border-subtle); border-bottom: 1px solid var(--bg-border-subtle);">
+ <div class="wrap">
+ <div class="kicker">Pricing</div>
+ <h2 class="section-title serif">A tier for however deep you want to go.</h2>
+ <p class="section-sub">Start free with market news and insights. Connect your portfolio when you want recommendations built around it.</p>
+
+ <div class="billing-toggle">
+ <button class="billing-btn active" id="btn-monthly" onclick="setBilling('monthly')">Monthly</button>
+ <button class="billing-btn" id="btn-annual" onclick="setBilling('annual')">Annual <span class="save-tag">Save 10%</span></button>
+ </div>
+
+ <div class="pricing-grid">
+ <div class="price-card">
+ <div class="price-tier">Free</div>
+ <div class="price-value"><span class="amount">$0</span><span class="period">/mo</span></div>
+ <div class="price-annual">Free, always</div>
+ <div class="price-desc">General market insights and stock news, in plain English. No portfolio connection required.</div>
+ <a class='btn btn-ghost price-cta' href='/get-started?plan=free'>Get started</a>
+ <ul class="price-features">
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Daily market news &amp; insights</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Sector &amp; earnings commentary</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> General watchlist, up to 5 tickers</li>
+ <li class="excluded"><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="3"><path d="M5 12h14"/></svg> Personal portfolio recommendations</li>
+ <li class="excluded"><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="3"><path d="M5 12h14"/></svg> Dollar-impact projections</li>
+ </ul>
+ </div>
+
+ <div class="price-card featured">
+ <div class="price-badge">Most popular</div>
+ <div class="price-tier">Plus</div>
+ <div class="price-value"><span class="amount" data-monthly="12" data-annual="10.80">$12</span><span class="period">/mo</span></div>
+ <div class="price-annual" data-monthly-note="Billed monthly" data-annual-note="$129.60 billed annually, 10% off">Billed monthly</div>
+ <div class="price-desc">Connect your portfolio and get daily recommendations, full reasoning, and dollar-impact projections on every pick.</div>
+ <a class='btn btn-primary price-cta' href='/get-started?plan=plus'>Start your strategy →</a>
+ <ul class="price-features">
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Personal portfolio recommendations</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Up to 3 connected accounts</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Daily recommendation refresh</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Dollar-impact projections</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> AI Portfolio Agent, ask it anything</li>
+ <li class="excluded"><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="3"><path d="M5 12h14"/></svg> Tax-aware suggestions</li>
+ </ul>
+ </div>
+
+ <div class="price-card soon">
+ <div class="price-badge soon">Coming soon</div>
+ <div class="price-tier">Pro</div>
+ <div class="price-value"><span class="amount" data-monthly="29" data-annual="26.10">$29</span><span class="period">/mo</span></div>
+ <div class="price-annual" data-monthly-note="Billed monthly" data-annual-note="$313.20 billed annually, 10% off">Billed monthly</div>
+ <div class="price-desc">Real-time signals, unlimited accounts, and the extra tools for investors who check often.</div>
+ <a href="#" class="btn btn-ghost price-cta disabled">Coming soon</a>
+ <ul class="price-features">
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Unlimited connected accounts</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real-time recommendation refresh</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Full reasoning + institutional flow signals</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Dollar-impact projections</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> AI Portfolio Agent, ask it anything</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Tax-aware suggestions</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Priority earnings &amp; news alerts</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Multi-portfolio / household view</li>
+ <li><svg class="feat-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
+ </ul>
+ </div>
+ </div>
+
+ <p class="price-note">Autopilot: Cue executes your strategy automatically, within guardrails you set. It's coming in a later phase, once the required regulatory registration is complete.</p>
+ </div>
+</section>
+
+<section class="quote-section">
+ <div class="wrap">
+ <div class="quote-mark">The Cue voice</div>
+ <blockquote>"Every recommendation comes with the <span>why</span>, because a plan you don't understand isn't a plan you'll stick with."</blockquote>
+ </div>
+</section>
+
+<div class="cta-band">
+ <div class="wrap">
+ <h2 class="serif">Give your portfolio a plan.</h2>
+ <p>No finance degree required, just a willingness to let the data do the talking.</p>
+ <a class='btn btn-primary' href='/get-started'>Start your strategy →</a>
+ </div>
+</div>
+
+<footer>
+ <div class="wrap">
+ <div class="logo">
+ <svg width="16" height="16" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="opacity:0.6;">
+ <polygon points="78,50 38,28 38,72" fill="#9898A8"/>
+ <circle cx="20" cy="50" r="9" fill="#9898A8"/>
+ </svg>
+ <span class="foot-copy">© 2026 Cue. Not investment advice.</span>
+ </div>
+ <div class="foot-links">
+ <a href="#pillars">Why Cue</a>
+ <a href="#how">How it works</a>
+ <a href="#pricing">Pricing</a>
+ <a href="#">Privacy</a>
+ </div>
+ </div>
+</footer>
+
+<script>
+function setBilling(mode) {
+  document.getElementById('btn-monthly').classList.toggle('active', mode === 'monthly');
+  document.getElementById('btn-annual').classList.toggle('active', mode === 'annual');
+  document.querySelectorAll('.price-value .amount[data-monthly]').forEach(function(el) {
+    el.textContent = '$' + el.dataset[mode];
+  });
+  document.querySelectorAll('.price-annual[data-monthly-note]').forEach(function(el) {
+    el.textContent = el.dataset[mode + 'Note'];
+  });
+}
+</script>
+</body>
+</html>
