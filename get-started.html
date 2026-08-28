@@ -12,18 +12,15 @@
     --bg-primary: #0F0F12;
     --bg-surface: #16161A;
     --bg-elevated: #1E1E24;
-    --bg-hover: #242430;
     --bg-border: #2A2A36;
     --bg-border-subtle: #222230;
     --accent: #E8A030;
     --accent-hover: #D4911A;
     --accent-dim: rgba(232,160,48,0.12);
-    --gain: #22C97A;
-    --gain-bg: rgba(34,201,122,0.10);
     --text-primary: #F4F4F6;
     --text-secondary: #9898A8;
     --text-muted: #55556A;
-    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-xl: 24px;
+    --radius-md: 10px; --radius-lg: 16px;
     --shadow-elevated: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,113 +59,51 @@
   .back-link { font-size: 13.5px; color: var(--text-secondary); }
   .back-link:hover { color: var(--text-primary); }
 
-  main { padding: 56px 0 100px; }
+  main { padding: 64px 0 100px; }
 
-  .stepper { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 48px; flex-wrap: wrap; }
-  .step-dot {
-    display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-muted);
-  }
-  .step-dot .n {
-    width: 24px; height: 24px; border-radius: 50%; background: var(--bg-elevated); border: 1px solid var(--bg-border);
-    display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text-muted);
-  }
-  .step-dot.active { color: var(--text-primary); }
-  .step-dot.active .n { background: var(--accent); border-color: var(--accent); color: #14100a; }
-  .step-dot.done .n { background: var(--gain); border-color: var(--gain); color: #0a1f14; }
-  .step-sep { width: 28px; height: 1px; background: var(--bg-border); }
-
-  .panel { display: none; }
-  .panel.active { display: block; animation: fadein .25s ease; }
-  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-  .panel-head { text-align: center; margin-bottom: 40px; }
+  .panel-head { text-align: center; margin-bottom: 44px; }
   .panel-head h1 { font-size: 30px; margin-bottom: 10px; }
   .panel-head p { font-size: 14.5px; color: var(--text-secondary); max-width: 480px; margin: 0 auto; }
 
-  .billing-toggle { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 32px; }
-  .billing-btn {
-    font-size: 12.5px; font-weight: 600; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--bg-border);
-    background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; transition: all .15s;
-    display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif;
-  }
-  .billing-btn:hover { border-color: var(--accent); color: var(--text-primary); }
-  .billing-btn.active { background: var(--accent); border-color: var(--accent); color: #14100a; }
-  .save-tag { font-size: 9.5px; font-weight: 700; background: var(--gain-bg); color: var(--gain); padding: 2px 7px; border-radius: 12px; }
-  .billing-btn.active .save-tag { background: rgba(20,16,10,0.18); color: #14100a; }
-  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
-  .price-card {
+  .tier-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .tier-card {
     background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
-    padding: 26px 22px; display: flex; flex-direction: column; position: relative;
+    padding: 28px 24px; display: flex; flex-direction: column; position: relative; text-align: left;
+    cursor: pointer; transition: border-color .15s, transform .15s; font: inherit; color: inherit;
   }
-  .price-card.featured { border-color: var(--accent); background: var(--bg-elevated); box-shadow: var(--shadow-elevated); }
-  .price-card.soon { opacity: 0.9; }
-  .price-badge {
-    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  .tier-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tier-card.featured { border-color: var(--accent); background: var(--bg-elevated); box-shadow: var(--shadow-elevated); }
+  .tier-badge {
+    position: absolute; top: -12px; left: 24px;
     background: var(--accent); color: #14100a; font-size: 10.5px; font-weight: 700; letter-spacing: .5px;
     text-transform: uppercase; padding: 4px 12px; border-radius: 20px; white-space: nowrap;
   }
-  .price-badge.soon { background: var(--bg-elevated); color: var(--text-muted); border: 1px solid var(--bg-border); }
-  .price-tier { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; }
-  .price-card.featured .price-tier { color: var(--accent); }
-  .price-value { display: flex; align-items: baseline; gap: 5px; margin-bottom: 4px; }
-  .price-value .amount { font-family: 'DM Serif Display', serif; font-size: 32px; }
-  .price-value .period { font-size: 12px; color: var(--text-muted); }
-  .price-desc { font-size: 12.5px; color: var(--text-secondary); margin: 8px 0 18px; line-height: 1.6; min-height: 58px; }
-  .choose-btn {
+  .tier-name { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 10px; }
+  .tier-card.featured .tier-name { color: var(--accent); }
+  .tier-tagline { font-size: 18px; font-weight: 700; margin-bottom: 6px; font-family: 'DM Sans', sans-serif; }
+  .tier-price { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .tier-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; flex: 1; }
+  .tier-features li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+  .feat-icon { flex-shrink: 0; margin-top: 3px; }
+  .tier-cta {
     width: 100%; padding: 11px 16px; border-radius: var(--radius-md); font-size: 13.5px; font-weight: 600;
-    cursor: pointer; border: 1px solid var(--bg-border); background: transparent; color: var(--text-primary);
-    transition: all .15s;
+    text-align: center; border: 1px solid var(--bg-border); background: transparent; color: var(--text-primary);
   }
-  .choose-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .price-card.featured .choose-btn { background: var(--accent); color: #14100a; border-color: var(--accent); }
-  .price-card.featured .choose-btn:hover { background: var(--accent-hover); }
-  .choose-btn.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+  .tier-card.featured .tier-cta { background: var(--accent); color: #14100a; border-color: var(--accent); }
+  .tier-card:hover .tier-cta { border-color: var(--accent); color: var(--accent); }
+  .tier-card.featured:hover .tier-cta { color: #14100a; background: var(--accent-hover); }
 
-  .form-card {
-    background: var(--bg-surface); border: 1px solid var(--bg-border); border-radius: var(--radius-lg);
-    padding: 36px; max-width: 460px; margin: 0 auto;
+  .redirect-panel { text-align: center; max-width: 440px; margin: 0 auto; }
+  .redirect-panel p { font-size: 14.5px; color: var(--text-secondary); margin-top: 8px; }
+  .spinner {
+    width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 20px;
+    border: 3px solid var(--bg-border); border-top-color: var(--accent);
+    animation: spin .8s linear infinite;
   }
-  .selected-plan-tag {
-    display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--accent);
-    background: var(--accent-dim); padding: 6px 12px; border-radius: 20px; margin-bottom: 24px;
-  }
-  .field { margin-bottom: 18px; }
-  .field label { display: block; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 7px; }
-  .field input {
-    width: 100%; padding: 11px 14px; border-radius: var(--radius-md); border: 1px solid var(--bg-border);
-    background: var(--bg-elevated); color: var(--text-primary); font-size: 14px; font-family: inherit;
-  }
-  .field input:focus { outline: none; border-color: var(--accent); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; width: 100%;
-    padding: 13px 22px; border-radius: var(--radius-md); font-size: 14.5px; font-weight: 600;
-    cursor: pointer; transition: all .15s; border: 1px solid transparent; margin-top: 8px;
-  }
-  .btn-primary { background: var(--accent); color: #14100a; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-ghost { border-color: var(--bg-border); color: var(--text-secondary); background: transparent; margin-top: 12px; }
-  .btn-ghost:hover { color: var(--text-primary); }
-
-  .payment-note {
-    display: flex; gap: 10px; background: var(--accent-dim); border: 1px solid rgba(232,160,48,0.25);
-    border-radius: var(--radius-md); padding: 14px 16px; font-size: 12.5px; color: var(--text-secondary);
-    line-height: 1.6; margin-bottom: 24px;
-  }
-  .payment-note b { color: var(--accent); }
-
-  .done-icon {
-    width: 56px; height: 56px; border-radius: 50%; background: var(--gain-bg); border: 1px solid rgba(34,201,122,0.3);
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 22px;
-  }
-  .done-panel { text-align: center; max-width: 440px; margin: 0 auto; }
-  .done-panel h1 { font-size: 26px; margin-bottom: 12px; }
-  .done-panel p { font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.65; }
-
-  @media (max-width: 700px) {
-    .pricing-grid { grid-template-columns: 1fr; }
-    .form-card { padding: 26px; }
+  @media (max-width: 640px) {
+    .tier-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -193,128 +128,45 @@
 <main>
   <div class="wrap">
 
-    <div class="stepper">
-      <div class="step-dot active" data-step-dot="plan"><span class="n">1</span> Plan</div>
-      <div class="step-sep"></div>
-      <div class="step-dot" data-step-dot="account"><span class="n">2</span> Account</div>
-      <div class="step-sep"></div>
-      <div class="step-dot" data-step-dot="payment"><span class="n">3</span> Payment</div>
-      <div class="step-sep"></div>
-      <div class="step-dot" data-step-dot="done"><span class="n">4</span> Done</div>
-    </div>
-
-    <!-- STEP 1: choose plan -->
-    <section class="panel active" id="panel-plan">
+    <!-- Tier choice — shown unless ?tier= already picks one -->
+    <section id="panel-tier">
       <div class="panel-head">
-        <h2 class="serif">Choose your plan.</h2>
-        <p>Start free, or connect your portfolio right away with Plus. You can change tiers anytime.</p>
+        <h1 class="serif">Choose how you want to use Cue.</h1>
+        <p>Both are free during the MVP beta — no card, no billing. You'll create your account on the next step.</p>
       </div>
-      <div class="billing-toggle">
-        <button class="billing-btn active" id="btn-monthly" onclick="setBilling('monthly')">Monthly</button>
-        <button class="billing-btn" id="btn-annual" onclick="setBilling('annual')">Annual <span class="save-tag">Save 10%</span></button>
-      </div>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <div class="price-tier">Free</div>
-          <div class="price-value"><span class="amount">$0</span><span class="period">/mo</span></div>
-          <div class="price-desc">General market insights and stock news, in plain English. No portfolio connection required.</div>
-          <button class="choose-btn" onclick="choosePlan('free')">Choose Free</button>
-        </div>
-        <div class="price-card featured">
-          <div class="price-badge">Most popular</div>
-          <div class="price-tier">Plus</div>
-          <div class="price-value"><span class="amount" data-monthly="12" data-annual="10.80">$12</span><span class="period">/mo</span></div>
-          <div class="price-desc">Connect your portfolio and get daily recommendations, full reasoning, and dollar-impact projections.</div>
-          <button class="choose-btn" onclick="choosePlan('plus')">Choose Plus</button>
-        </div>
-        <div class="price-card soon">
-          <div class="price-badge soon">Coming soon</div>
-          <div class="price-tier">Pro</div>
-          <div class="price-value"><span class="amount" data-monthly="29" data-annual="26.10">$29</span><span class="period">/mo</span></div>
-          <div class="price-desc">Real-time signals, unlimited accounts, and extra tools for investors who check often.</div>
-          <button class="choose-btn disabled">Coming soon</button>
-        </div>
+      <div class="tier-grid">
+        <button class="tier-card" onclick="goToApp('market_data')">
+          <div class="tier-name">Market Data</div>
+          <div class="tier-tagline">Browse the market</div>
+          <div class="tier-price">Free during MVP</div>
+          <ul class="tier-features">
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Search any ticker for institutional-grade research</li>
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Cue's daily pick, in plain English</li>
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> No account connection required</li>
+          </ul>
+          <div class="tier-cta">Continue with Market Data</div>
+        </button>
+        <button class="tier-card featured" onclick="goToApp('portfolio_optimizer')">
+          <div class="tier-badge">Most popular</div>
+          <div class="tier-name">Portfolio Optimizer</div>
+          <div class="tier-tagline">Get a full read on your holdings</div>
+          <div class="tier-price">Free during MVP</div>
+          <ul class="tier-features">
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Upload via CSV, Excel, or a photo — no brokerage login</li>
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Sector allocation, overlap &amp; diversification score</li>
+            <li><svg class="feat-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Tailored buy/sell recommendations</li>
+          </ul>
+          <div class="tier-cta">Continue with Portfolio Optimizer</div>
+        </button>
       </div>
     </section>
 
-    <!-- STEP 2: create account -->
-    <section class="panel" id="panel-account">
-      <div class="panel-head">
-        <h2 class="serif">Create your account.</h2>
-        <p>Just the basics for now — you'll set everything else up once you're in.</p>
-      </div>
-      <div class="form-card">
-        <div class="selected-plan-tag" id="account-plan-tag">Plan: Free</div>
-        <form id="account-form" onsubmit="return goToNextAfterAccount(event)">
-          <div class="field">
-            <label for="full-name">Full name</label>
-            <input type="text" id="full-name" placeholder="Jane Investor" required>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="jane@example.com" required>
-          </div>
-          <div class="field field-row">
-            <div>
-              <label for="password">Password</label>
-              <input type="password" id="password" placeholder="••••••••" required minlength="8">
-            </div>
-            <div>
-              <label for="password2">Confirm password</label>
-              <input type="password" id="password2" placeholder="••••••••" required minlength="8">
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Continue</button>
-          <button type="button" class="btn btn-ghost" onclick="goToStep('plan')">← Change plan</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- STEP 3: payment (Plus only) -->
-    <section class="panel" id="panel-payment">
-      <div class="panel-head">
-        <h2 class="serif">Payment method.</h2>
-        <p>Plus is $12/mo, billed monthly (or $10/mo billed annually).</p>
-      </div>
-      <div class="form-card">
-        <div class="payment-note">
-          <span>ⓘ</span>
-          <span><b>You won't be charged today.</b> Cue is still completing the regulatory registration required to legally charge for personalized investment advice. This step just sets up your billing details in advance — we'll email you the moment paid plans go live.</span>
-        </div>
-        <form id="payment-form" onsubmit="return goToStep('done'), false">
-          <div class="field">
-            <label for="card-name">Name on card</label>
-            <input type="text" id="card-name" placeholder="Jane Investor">
-          </div>
-          <div class="field">
-            <label for="card-number">Card number</label>
-            <input type="text" id="card-number" placeholder="4242 4242 4242 4242" inputmode="numeric">
-          </div>
-          <div class="field field-row">
-            <div>
-              <label for="card-exp">Expiry</label>
-              <input type="text" id="card-exp" placeholder="MM / YY">
-            </div>
-            <div>
-              <label for="card-cvc">CVC</label>
-              <input type="text" id="card-cvc" placeholder="123" inputmode="numeric">
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">Finish setup</button>
-          <button type="button" class="btn btn-ghost" onclick="goToStep('account')">← Back</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- STEP 4: done -->
-    <section class="panel" id="panel-done">
-      <div class="done-panel">
-        <div class="done-icon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C97A" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <h2 class="serif" id="done-title">You're in.</h2>
-        <p id="done-copy">Check your email to verify your account, then log in to see your first strategy.</p>
-        <a class='btn btn-primary' href='/' style='display:inline-flex; width:auto; padding-left:28px; padding-right:28px;'>Back to site</a>
+    <!-- Shown briefly when ?tier= is already in the URL (from a pricing card) -->
+    <section id="panel-redirect" style="display:none;">
+      <div class="redirect-panel">
+        <div class="spinner"></div>
+        <h1 class="serif" id="redirect-title">Taking you to sign up…</h1>
+        <p>Create your account, accept the beta agreement, and you're in.</p>
       </div>
     </section>
 
@@ -322,69 +174,27 @@
 </main>
 
 <script>
-  var selectedPlan = 'free';
+  // The real signup, beta agreement, and tier-specific setup (including CSV/
+  // Excel/photo upload) all live in the actual product at app.cueportfolio.com
+  // — this page's only job is letting a visitor pick a tier before handing
+  // off. Duplicating that flow here as static-site JS would mean a second,
+  // divergent copy of security-sensitive logic (auth, file upload) with no
+  // way to keep it in sync with the real backend.
+  var APP_URL = 'https://app.cueportfolio.com/app';
 
-  function setBilling(mode) {
-    document.getElementById('btn-monthly').classList.toggle('active', mode === 'monthly');
-    document.getElementById('btn-annual').classList.toggle('active', mode === 'annual');
-    document.querySelectorAll('.price-value .amount[data-monthly]').forEach(function(el) {
-      el.textContent = '$' + el.dataset[mode];
-    });
+  function goToApp(tier) {
+    window.location.href = APP_URL + '?tier=' + encodeURIComponent(tier);
   }
 
-  function goToStep(step) {
-    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panel-' + step).classList.add('active');
-
-    document.querySelectorAll('.step-dot').forEach(function(d) { d.classList.remove('active', 'done'); });
-    var order = ['plan', 'account', 'payment', 'done'];
-    var idx = order.indexOf(step);
-    order.forEach(function(name, i) {
-      var dot = document.querySelector('[data-step-dot="' + name + '"]');
-      if (i < idx) dot.classList.add('done');
-      if (i === idx) dot.classList.add('active');
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return false;
-  }
-
-  function choosePlan(plan) {
-    selectedPlan = plan;
-    document.getElementById('account-plan-tag').textContent = 'Plan: ' + (plan === 'plus' ? 'Plus, $12/mo' : 'Free');
-    goToStep('account');
-  }
-
-  function goToNextAfterAccount(e) {
-    e.preventDefault();
-    var pw = document.getElementById('password').value;
-    var pw2 = document.getElementById('password2').value;
-    if (pw !== pw2) {
-      alert("Passwords don't match.");
-      return false;
-    }
-    if (selectedPlan === 'plus') {
-      goToStep('payment');
-    } else {
-      document.getElementById('done-title').textContent = "You're in.";
-      document.getElementById('done-copy').textContent = "Check your email to verify your account, then log in to see your first market insights.";
-      goToStep('done');
-    }
-    return false;
-  }
-
-  // Update the "done" copy for Plus specifically once payment step completes
-  document.getElementById('payment-form').addEventListener('submit', function() {
-    document.getElementById('done-title').textContent = "You're set up.";
-    document.getElementById('done-copy').textContent = "Your account and billing details are saved. We'll email you the moment Cue Plus goes live for real, and you won't be charged before then.";
-  });
-
-  // If arriving from a pricing card link like get-started.html?plan=plus,
-  // skip straight to account creation with that plan pre-selected.
-  (function() {
+  (function () {
     var params = new URLSearchParams(window.location.search);
-    var plan = params.get('plan');
-    if (plan === 'plus' || plan === 'free') {
-      choosePlan(plan);
+    var tier = params.get('tier');
+    if (tier === 'market_data' || tier === 'portfolio_optimizer') {
+      document.getElementById('panel-tier').style.display = 'none';
+      document.getElementById('panel-redirect').style.display = 'block';
+      document.getElementById('redirect-title').textContent =
+        'Setting up ' + (tier === 'portfolio_optimizer' ? 'Portfolio Optimizer' : 'Market Data') + '…';
+      setTimeout(function () { goToApp(tier); }, 600);
     }
   })();
 </script>
